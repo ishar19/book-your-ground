@@ -1,0 +1,4 @@
+update url in groundInfo
+do env file in firebase and multer storage in server file
+proxy in react package.json
+update CORS in server
