@@ -96,7 +96,6 @@ app.post('/', multerUpload.array('images'), async(req, res) => {
 })
 
 app.delete('/:id',async(req,res) => {
-    console.log(req.params.id)
     await deleteDoc(doc(db, "grounds", req.params.id));
     res.sendStatus(200);
 })
@@ -106,11 +105,9 @@ app.get('/update/:id', async(req, res) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
         res.send(docSnap.data());
     } else {
         // doc.data() will be undefined in this case
-        console.log("No such document!");
         res.sendStatus(404)
     }
 
@@ -121,7 +118,6 @@ app.post('/update/:id', multerUpload.array('images'), async (req, res) => {
     const { name, capacity, cost, location, sport } = req.body
     try {
         const docRef =  doc(db,"grounds",req.params.id)
-        console.log(req.body)
         await updateDoc(docRef, {
             name: name,
             capacity: capacity,

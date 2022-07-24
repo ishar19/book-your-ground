@@ -46,7 +46,7 @@ function GroundInfo() {
         }
         axios
             .post('http://localhost:8080/',formData)
-            .then((data) => console.log(data))
+            .then((data) => { })
             .catch(err => {
                 console.error(err);
             });
