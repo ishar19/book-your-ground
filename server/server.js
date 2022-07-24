@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app';
-import  { getFirestore, collection, getDoc,getDocs, deleteDoc, addDoc, doc } from 'firebase/firestore';
+import  { getFirestore, collection, updateDoc, getDoc,getDocs, deleteDoc, addDoc, doc } from 'firebase/firestore';
 import body_Parser from 'body-parser';
 import  express  from 'express'
 import 'dotenv/config'
@@ -81,7 +81,7 @@ app.post('/', multerUpload.array('images'), async(req, res) => {
     try {
         const docRef = await addDoc(collection(db, "grounds"), {
             name : name,
-            capacty : capacity,
+            capacity : capacity,
             cost : cost,
             location : location,
             sport: sport,
@@ -115,6 +115,27 @@ app.get('/update/:id', async(req, res) => {
     }
 
 })
+
+
+app.post('/update/:id', multerUpload.array('images'), async (req, res) => {
+    const { name, capacity, cost, location, sport } = req.body
+    try {
+        const docRef =  doc(db,"grounds",req.params.id)
+        console.log(req.body)
+        await updateDoc(docRef, {
+            name: name,
+            capacity: capacity,
+            cost: cost,
+            location: location,
+            sport: sport,
+        })
+    }
+    catch (e) {
+        console.error("Error adding document: ", e);
+    }
+
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
