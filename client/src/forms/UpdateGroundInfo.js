@@ -21,7 +21,6 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
     async function getData() {
       const response = await axios.get(`http://localhost:8080/update/${prop.data}`)
-      console.log(2)
       await setGroundData((prevData)=>response.data);
     }
 
@@ -59,7 +58,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
     }
     axios
       .post(`http://localhost:8080/update/${prop.data}`, formData)
-      .then((data) => console.log(data))
+      .then((data) =>{})
       .catch(err => {
         console.error(err);
       });

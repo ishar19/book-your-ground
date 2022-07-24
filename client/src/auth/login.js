@@ -1,6 +1,7 @@
 import fire from '../fire'
 import React from 'react'
 import { getAuth, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
+import Button from 'react-bootstrap/Button';
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
@@ -26,7 +27,9 @@ const Login = () => {
             });
     }
   return (
-    <button onClick={logIn}>login</button>
+    <>     
+    <Button onClick={logIn} variant="primary">Login With Google</Button>
+    </>
   )
 }
 
