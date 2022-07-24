@@ -44,15 +44,12 @@ function GroundInfo() {
         for(var info in groundInfo){
             formData.append(info, groundInfo[info]);
         }
-        // console.log(formData.getAll('images'));
-        // console.log(formData.get('name'))
         axios
             .post('http://localhost:8080/',formData)
             .then((data) => console.log(data))
             .catch(err => {
                 console.error(err);
             });
-        // console.log(groundInfo)
     }
 
     return (

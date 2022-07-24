@@ -1,6 +1,5 @@
 import firebase from 'firebase/compat/app';
-import  { getFirestore, collection } from 'firebase/firestore';
-import { addDoc } from 'firebase/firestore';
+import  { getFirestore, collection, getDoc,getDocs, deleteDoc, addDoc, doc } from 'firebase/firestore';
 import body_Parser from 'body-parser';
 import  express  from 'express'
 import 'dotenv/config'
@@ -21,6 +20,7 @@ app.use('/file-storage', express.static('file-storage'));
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE,PATCH")
     next();
 });
 
@@ -37,17 +37,6 @@ const multerUpload = Multer({
     })
 })
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, '/tmp/my-uploads')
-//     },
-//     filename: function (req, file, cb) {
-//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-//         cb(null, file.fieldname + '-' + uniqueSuffix)
-//     }
-// })
-
-// const upload = multer({ dest : 'uploads' })
 
 const firebaseConfig = {
     apiKey: "AIzaSyA5k__jLdpp5IvLiOFO50DAQ7UXxVq4YB8",
@@ -69,31 +58,62 @@ try {
 const port = 8080
 const db = getFirestore()
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.get('/', async(req, res) => {
+    const groundData = {};
+    try{
+        const querySnapshot = await getDocs(collection(db, "grounds"));
+        querySnapshot.forEach((doc) => {
+            groundData[doc.id] = doc.data();
+        });
+        res.send(groundData)
+    }
+    catch(e){
+        console.log(e)
+    }
 })
 
-// app.post('/', upload.single('images'), async(req, res) => {
-//     // try {
-//     //     // const docRef = await addDoc(collection(db, "grounds"), {
-//     //     //     first: "Ada",
-//     //     //     last: "Lovelace",
-//     //     //     born: 1815
-//     //     // });
-//     //     console.log(req)
-//     //     res.send("document submitted")
-//     // } catch (e) {
-//     //     console.error("Error adding document: ", e);
-//     // }
-//     console.log(req.body)
-
-// })
-
-app.post('/', multerUpload.array('images'), (req, res) => {
+app.post('/', multerUpload.array('images'), async(req, res) => {
+    const imgArray = [];
     for(let i =0;i<req.files.length;i++){
-        console.log(req.files[i].publicUrl);
+        imgArray.push(req.files[i].publicUrl);
+    }
+    const {name,capacity,cost,location,sport} = req.body
+    try {
+        const docRef = await addDoc(collection(db, "grounds"), {
+            name : name,
+            capacty : capacity,
+            cost : cost,
+            location : location,
+            sport: sport,
+            photos : imgArray
+        });
+        res.sendStatus(200)
+    } 
+    catch (e) {
+        console.error("Error adding document: ", e);
     }
     
+})
+
+app.delete('/:id',async(req,res) => {
+    console.log(req.params.id)
+    await deleteDoc(doc(db, "grounds", req.params.id));
+    res.sendStatus(200);
+})
+
+app.get('/update/:id', async(req, res) => {
+    const docRef = doc(db, "grounds", req.params.id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        res.send(docSnap.data());
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        res.sendStatus(404)
+    }
+
 })
 
 app.listen(port, () => {
