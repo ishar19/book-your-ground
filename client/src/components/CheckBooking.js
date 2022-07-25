@@ -2,31 +2,33 @@ import React,{ useState} from 'react'
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import axios from "axios";
+import CheckCalender from './CheckCalender'
+
 const auth = getAuth();
 
-function CheckBooking() {
+function CheckBooking(props) {
     const [loggedIn, setLoginState] = useState(false)
-    function bookings() {
-
+   
+    async function bookings() {
+        let data = await axios.get(`http://localhost:8080/booking/${props.data.id}`)
+        data = data.data;
+        console.log(data.bookingHistory)
     }
     onAuthStateChanged(auth, (user) => {
         if (user) {
             setLoginState(() => true)
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
-            const uid = user.uid;
-            // ...
+          const uid = user.uid;
         } else {
-            // User is signed out
-            // ...
-            setLoginState(() => false)
+       setLoginState(() => false)
         }
     }
     )
 
   return (
       <div>
-          {loggedIn ? <Button onClick={bookings} variant="primary">Check Bookings</Button> : <Button onClick={() => window.alert("Login to check bookings")} variant="danger">Check Bookings</Button>}
+          {loggedIn ? <Link to="/BookGround" state={{ id: props.data.id }} ><Button variant="primary">View and Pick a Date</Button> </Link>
+: <Button onClick={() => window.alert("Login to View and Book a Date")} variant="danger">View and Pick a Date</Button>}
       </div>
     )
 }

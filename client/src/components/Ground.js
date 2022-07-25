@@ -45,7 +45,7 @@ function Ground(props){
         <button>
           <Link to="/UpdateGround" state={{ id:info[0] }} >Update</Link>
         </button> */}
-        <CheckBooking/>
+        <CheckBooking data={{ id:info[0] }}/>
       </div>)}
     </div>
   )

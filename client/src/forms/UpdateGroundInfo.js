@@ -24,14 +24,6 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
       await setGroundData((prevData)=>response.data);
     }
 
-   /** const [groundInfo, setGroundInfo] = useState({
-      name: '',
-      capacity: '',
-      cost: '',
-      location: '',
-      sport: '',
-    });*/
-
   useEffect(() => {
      getData()
   },[])

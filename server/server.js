@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app';
-import  { getFirestore, collection, updateDoc, getDoc,getDocs, deleteDoc, addDoc, doc } from 'firebase/firestore';
+import  { getFirestore, collection, updateDoc, getDoc,getDocs, deleteDoc, addDoc, doc, arrayUnion } from 'firebase/firestore';
 import body_Parser from 'body-parser';
 import  express  from 'express'
 import 'dotenv/config'
@@ -8,6 +8,7 @@ import FirebaseStorage from 'multer-firebase-storage'
 import fs from 'fs'
 import cors from 'cors'
 import path from 'path'
+import { time } from 'console';
 
 
 
@@ -65,6 +66,7 @@ app.get('/', async(req, res) => {
         querySnapshot.forEach((doc) => {
             groundData[doc.id] = doc.data();
         });
+        // console.log(groundData); 
         res.send(groundData)
     }
     catch(e){
@@ -132,6 +134,40 @@ app.post('/update/:id', multerUpload.array('images'), async (req, res) => {
 
 })
 
+
+app.get('/updateBooking/:id', async (req, res) => {
+    const docRef = doc(db, "grounds", req.params.id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        res.send(docSnap.data());
+    } else {
+        // doc.data() will be undefined in this case
+        res.sendStatus(404)
+    }
+
+})
+
+
+app.post('/updateBooking/:id', async (req, res) => {
+    try {
+        const docRef = doc(db, "grounds", req.params.id)
+        const timestamp = parseInt(Object.keys(req.body)[0]);
+        const date = new Date(timestamp);
+        console.log(timestamp,date);
+        await updateDoc(docRef, {
+                bookingHistory : arrayUnion({
+                    cancelled : false,
+                    date: date,
+                })
+            
+        })
+    }
+    catch (e) {
+        console.error("Error adding document: ", e);
+    }
+
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Admin from './pages/Admin'
 import UpdateGround from './pages/UpdateGround'
 import User from './views/User'
-
+import GroundBook from './views/GroundBook'
 function App() {
   return (
     <div>
@@ -14,6 +14,7 @@ function App() {
             <Route path = "/admin" element={<Admin/>}></Route>
             <Route path="/user" element={<User />}></Route>
             <Route path = "/UpdateGround" element={<UpdateGround/>}></Route>
+            <Route path = "/BookGround" element={<GroundBook/>}></Route>
         </Routes>
     </div>
   );
