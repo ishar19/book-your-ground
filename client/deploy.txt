@@ -3,3 +3,10 @@ do env file in firebase and multer storage in server file
 proxy in react package.json
 update CORS in server
 update localhost everywhere
+
+
+
+//toDO
+
+update post request to send status
+add auth in middleware of servers

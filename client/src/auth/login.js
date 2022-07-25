@@ -16,6 +16,7 @@ const Login = () => {
                 const user = result.user;
                 console.log(user)
               sessionStorage.setItem("email", user.email)
+              sessionStorage.setItem("user", user)
                 // ...
             }).catch((error) => {
                 // Handle Errors here.

@@ -28,7 +28,7 @@ function BasicExample() {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="#home">Book-Your-Ground</Navbar.Brand>
+                <Navbar.Brand >Book-Your-Ground</Navbar.Brand>
                     <Nav className="ml-auto">
                         {loggedIn ? <Logout /> : <Login />}
                     </Nav>

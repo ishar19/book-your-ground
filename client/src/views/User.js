@@ -7,7 +7,7 @@ function User() {
   const groundInfo = []
   const getGrounds = async () => {
     const data = await axios.get('http://localhost:8080/')
-    setGrounds(data.data)
+    await setGrounds(data.data)
     console.log(data.data)
   }
   useEffect(() => {

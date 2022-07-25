@@ -9,6 +9,7 @@ const LogOut = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
             sessionStorage.removeItem("email")
+            sessionStorage.removeItem("user")
         }).catch((error) => {
             // An error happened.
         });

@@ -12,15 +12,12 @@ function CheckCalender(props) {
         console.log(typeof(value))
     }
 
-    function booking(){
+    async function booking(){
       const timeValue = value.getTime();
       console.log(timeValue.toString())
-      axios
+      const resposne = await axios
         .post(`http://localhost:8080/updateBooking/${id}/${sessionStorage.getItem("email") }`,timeValue.toString())
-        .then((data) => { })
-        .catch(err => {
-          console.error(err);
-        });
+       console.log(resposne)
     }
   
   return (

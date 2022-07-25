@@ -170,6 +170,19 @@ app.post('/updateBooking/:id/:email', async (req, res) => {
 
 })
 
+app.get('/getBookings/:email',async(req, res)=>{
+    const docRef = doc(db, "usersBookings", req.params.email);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data())
+
+    if (docSnap.exists()) {
+        res.send(docSnap.data());
+    } else {
+        // doc.data() will be undefined in this case
+        res.sendStatus(404)
+    }
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
