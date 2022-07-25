@@ -149,7 +149,7 @@ app.get('/updateBooking/:id', async (req, res) => {
 })
 
 
-app.post('/updateBooking/:id', async (req, res) => {
+app.post('/updateBooking/:id/:email', async (req, res) => {
     try {
         const docRef = doc(db, "grounds", req.params.id)
         const timestamp = parseInt(Object.keys(req.body)[0]);
@@ -159,6 +159,7 @@ app.post('/updateBooking/:id', async (req, res) => {
                 bookingHistory : arrayUnion({
                     cancelled : false,
                     date: date,
+                    by: req.params.email
                 })
             
         })

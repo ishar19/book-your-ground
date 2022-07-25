@@ -16,7 +16,7 @@ function CheckCalender(props) {
       const timeValue = value.getTime();
       console.log(timeValue.toString())
       axios
-        .post(`http://localhost:8080/updateBooking/${id}`,timeValue.toString())
+        .post(`http://localhost:8080/updateBooking/${id}/${sessionStorage.getItem("email") }`,timeValue.toString())
         .then((data) => { })
         .catch(err => {
           console.error(err);

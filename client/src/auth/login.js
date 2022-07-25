@@ -14,6 +14,8 @@ const Login = () => {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                console.log(user)
+              sessionStorage.setItem("email", user.email)
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
