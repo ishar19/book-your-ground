@@ -45,6 +45,9 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append('images', file[i]);
+    }
     for (var info in groundData) {
       formData.append(info, groundData[info]);
     }
@@ -74,6 +77,11 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
         <Form.Group onChange={handleChange} className="mb-3" controlId="cost">
           <Form.Label>Cost</Form.Label>
           <Form.Control value={groundData['cost']} type="number" placeholder={groundData['cost']}min="0" step="1" />
+        </Form.Group>
+
+        <Form.Group onChange={(e) => setFile(e.target.files)} controlId="images" className="mb-3">
+          <Form.Label>Upload Image</Form.Label>
+          <Form.Control type="file" multiple />
         </Form.Group>
 
         <Form.Group onChange={handleChange} controlId="location" className="mb-3">
