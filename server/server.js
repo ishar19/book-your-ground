@@ -209,13 +209,15 @@ app.post('/adminLogin/:key', async (req, res) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        console.log(docSnap.data())
        if(docSnap.data().key==req.params.key){
         res.sendStatus(200)
        }
+       else{
+          res.sendStatus(401)
+       }
     } else {
         // doc.data() will be undefined in this case
-        res.sendStatus(404)
+        // res.sendStatus(404)
     }
 })
 

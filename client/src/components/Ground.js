@@ -1,26 +1,29 @@
-import React,{ useState} from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import Figure from 'react-bootstrap/Figure';
 import UpdateGround from '../pages/UpdateGround'
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import CheckBooking from '../components/CheckBooking'
 const auth = getAuth();
 
-function Ground(props){
-  
-  function deleteGround(id){
-    axios.delete(`http://localhost:8080/${id}`).then((res)=> {if(res.status==200){
-      window.location.reload();
-    }})
+function Ground(props) {
+
+  function deleteGround(id) {
+    axios.delete(`http://localhost:8080/${id}`).then((res) => {
+      if (res.status == 200) {
+        window.location.reload();
+      }
+    })
   }
 
-  
+
 
   return (
     <div>
-      { props.info.map((info) =>  
+      {props.info.map((info) =>
+
         <div className="text-center mt-5">
           <Figure className="text-center">
             <Figure.Image
@@ -37,16 +40,15 @@ function Ground(props){
               <p className="text-center">Capacity of {info[1].capacity} people</p>
             </Figure.Caption>
           </Figure>
+          <div>
+            {props.admin ? <Button className="mr-2" onClick={() => deleteGround(info[0])}>Delete</Button>
+              : <></>}
+            {props.admin ? <Link to="/UpdateGround" state={{ id: info[0] }} ><Button className="ml-2"> Update</Button> </Link>
+              : <> </>}
+          </div>
+          {sessionStorage.getItem('admin') ? <></> : <CheckBooking data={{ id: info[0] }} />}
+        </div>)}
 
-        {/* <p>{info[1].name}</p>
-        <p>{info[1].capacity}</p> */}
-      
-        {/* <button onClick={() => deleteGround(info[0])}>Delete</button>
-        <button>
-          <Link to="/UpdateGround" state={{ id:info[0] }} >Update</Link>
-        </button> */}
-        <CheckBooking data={{ id:info[0] }}/>
-      </div>)}
     </div>
   )
 }
