@@ -46,7 +46,7 @@ function Ground(props) {
             {props.admin ? <Link to="/UpdateGround" state={{ id: info[0] }} ><Button className="ml-2"> Update</Button> </Link>
               : <> </>}
           </div>
-          {sessionStorage.getItem('admin') ? <></> : <CheckBooking data={{ id: info[0] }} />}
+          {!localStorage.getItem('email') ? <></> : <CheckBooking data={{ id: info[0] }} />}
         </div>)}
 
     </div>

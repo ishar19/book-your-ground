@@ -6,12 +6,10 @@ import { Routes, Route, Link } from "react-router-dom";
 
 function UpdateGround () {
   const location = useLocation();
-  // const id = location.state?.id;
+  const id = location.state?.id;
     console.log('hello')
-  return (<div>
-  <h1>Heelo</h1>
-    {/* <UpdateGroundInfo data={id} /> */}
-
+  return (<div className="text-center">
+    <UpdateGroundInfo data={id} />
   </div>
   )
 }

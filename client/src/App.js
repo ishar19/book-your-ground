@@ -21,7 +21,7 @@ function App() {
         <Route path="/userprofile" element={<ProtectedRoute>
           <UserProfile />
         </ProtectedRoute>}></Route>
-        <Route path="/user" element={<ProtectedRoute> <User /></ProtectedRoute>}></Route>
+      <Route path="/user" element={<ProtectedRoute> <User /></ProtectedRoute>}></Route>
         <Route path="/UpdateGround" element={<ProtectedRouteAdmin>   <UpdateGround /></ProtectedRouteAdmin> }></Route>
         <Route path="/BookGround" element={<ProtectedRoute>  <GroundBook /></ProtectedRoute>}></Route>
       </Routes>
@@ -29,14 +29,17 @@ function App() {
   );
 }
 
-const ProtectedRoute = () => {
-  if (!(sessionStorage.getItem('email'))) {
+const ProtectedRoute = ({children}) => {
+  if (!(localStorage.getItem('user'))) {
     return <Navigate to="/" replace />;
   }
+  return children;
 };
-const ProtectedRouteAdmin = () => {
+
+const ProtectedRouteAdmin = ({children}) => {
   if (!(sessionStorage.getItem('admin'))) {
     return <Navigate to="/" replace />;
   }
+  return children;
 };
 export default App;
