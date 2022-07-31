@@ -15,8 +15,8 @@ const Login = () => {
                 // The signed-in user info.
                 const user = result.user;
                 console.log(user)
-              sessionStorage.setItem("email", user.email)
-              sessionStorage.setItem("user", user)
+                localStorage.setItem("email", user.email)
+              // sessionStorage.setItem("user", user)
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
