@@ -7,8 +7,9 @@ import CheckBooking from '../components/CheckBooking';
 import Form from 'react-bootstrap/Form';
 
 function Ground(props) {
-  const [search, setSearch] = useState("madrid")
+  const [search, setSearch] = useState("")
   const data = props.info;
+  var found = true;
   const handleSubmit = (e) => {
     const value = e.target.search.value
     setSearch(() => value.toString().toLowerCase())
@@ -26,7 +27,8 @@ function Ground(props) {
   const grounds =
     data.map((info) => 
     // console.log(info[1].name.toLowerCase().trim()==search.trim())
-      info[1].name.toLowerCase().trim() == search.trim() || info[1].sport.toLowerCase().trim() == search.trim() || info[1].location.toLowerCase().trim() == search.trim() ||search === "" ? <div className="mb-3">
+      info[1].name.toLowerCase().trim() == search.trim() || info[1].sport.toLowerCase().trim() == search.trim() || info[1].location.toLowerCase().trim() == search.trim() ||search === "" ?<div className="mb-3">
+        {found = true} 
         <Figure className="text-center">
           <Figure.Image
             width={180}
@@ -50,7 +52,8 @@ function Ground(props) {
           {props.isAdmin ? <> </> : <CheckBooking data={{ id: info[0] }} />}
         </div>
       </div>
-        : <></>
+        : found = false
+
     )
 
   return (
@@ -64,7 +67,8 @@ function Ground(props) {
           Search
         </Button>
       </form>
-      {grounds}
+      {console.log(found)}
+      {found?grounds:<h2>No search results found for {search}</h2>}
     </div>
   )
 }
