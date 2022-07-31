@@ -5,6 +5,8 @@ import GroundInfo from '../forms/GroundInfo'
 import Button from 'react-bootstrap/Button'
 
 function Admin () {
+  const isAdmin = window.location.pathname== '/admin'
+
    const [grounds, setGrounds] =  useState({})
    const [showGrounds, setShowGrounds] = useState(false)
     const groundInfo = []
@@ -26,7 +28,7 @@ function Admin () {
         groundInfo.push(ground)
           })}
 
-      {showGrounds ? <Ground admin={true} info={groundInfo} /> : <></> }   
+      {showGrounds ? <Ground isAdmin   admin={true} info={groundInfo} /> : <></> }   
   </div>
   )
 }

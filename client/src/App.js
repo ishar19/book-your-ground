@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Navigate, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './pages/Home'
@@ -30,7 +30,7 @@ function App() {
 }
 
 const ProtectedRoute = ({children}) => {
-  if (!(localStorage.getItem('user'))) {
+  if (!(localStorage.getItem('email'))) {
     return <Navigate to="/" replace />;
   }
   return children;
