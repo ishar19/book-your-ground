@@ -18,7 +18,7 @@ app.use('/file-storage', express.static('file-storage'));
 
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000","*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE,PATCH")
     next();
@@ -55,7 +55,7 @@ try {
     }
 }
 
-const port = 8080
+// const port = 8080
 const db = getFirestore()
 
 app.get('/', async (req, res) => {
@@ -300,7 +300,7 @@ app.post('/adminLogin/:key', async (req, res) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.listen(process.env.PORT || 8080, () => {
+    console.log("Running")
 })
 
