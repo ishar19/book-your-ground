@@ -11,7 +11,7 @@ function CheckBooking(props) {
     const [loggedIn, setLoginState] = useState(false)
    
     async function bookings() {
-        let data = await axios.get(`http://localhost:8080/booking/${props.data.id}`)
+        let data = await axios.get(`https://book-your-ground.herokuapp.com/booking/${props.data.id}`)
         data = data.data;
         console.log(data.bookingHistory)
     }

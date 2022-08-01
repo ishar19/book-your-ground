@@ -1,14 +1,16 @@
-import Navbar from '../components/Navbar'
 import React, { useState,useEffect } from 'react'
+import Navbar from '../components/Navbar'
 import axios from 'axios'
 import Ground from '../components/Ground'
+
+
 function User() {
   const [grounds, setGrounds] = useState({})
+  const showGrounds = true
   const groundInfo = []
   const getGrounds = async () => {
-    const data = await axios.get('http://localhost:8080/')
-    await setGrounds(data.data)
-    console.log(data.data)
+    const data = await axios.get('https://book-your-ground.herokuapp.com/')
+     setGrounds(data.data)
   }
   useEffect(() => {
       getGrounds()
@@ -19,7 +21,7 @@ function User() {
       {Object.entries(grounds).map(ground => {
         groundInfo.push(ground)
       })}
-      <Ground info={groundInfo} />
+     {showGrounds? <Ground admin={false} info={groundInfo} />:<></>}
 
     </>
   )

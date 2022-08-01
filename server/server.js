@@ -1,14 +1,13 @@
 import firebase from 'firebase/compat/app';
-import  { getFirestore, collection, updateDoc, getDoc,getDocs, deleteDoc, addDoc, doc, arrayUnion } from 'firebase/firestore';
+import { arrayRemove, getFirestore, collection, updateDoc, getDoc, getDocs, deleteDoc, addDoc, doc, arrayUnion, query, where } from 'firebase/firestore';
 import body_Parser from 'body-parser';
-import  express  from 'express'
+import express from 'express'
 import 'dotenv/config'
 import Multer from 'multer'
 import FirebaseStorage from 'multer-firebase-storage'
 import fs from 'fs'
 import cors from 'cors'
 import path from 'path'
-import { time } from 'console';
 
 
 
@@ -19,7 +18,7 @@ app.use('/file-storage', express.static('file-storage'));
 
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE,PATCH")
     next();
@@ -56,12 +55,12 @@ try {
     }
 }
 
-const port = 8080
+// const port = 8080
 const db = getFirestore()
 
-app.get('/', async(req, res) => {
+app.get('/', async (req, res) => {
     const groundData = {};
-    try{
+    try {
         const querySnapshot = await getDocs(collection(db, "grounds"));
         querySnapshot.forEach((doc) => {
             groundData[doc.id] = doc.data();
@@ -69,40 +68,40 @@ app.get('/', async(req, res) => {
         // console.log(groundData); 
         res.send(groundData)
     }
-    catch(e){
+    catch (e) {
         console.log(e)
     }
 })
 
-app.post('/', multerUpload.array('images'), async(req, res) => {
+app.post('/', multerUpload.array('images'), async (req, res) => {
     const imgArray = [];
-    for(let i =0;i<req.files.length;i++){
+    for (let i = 0; i < req.files.length; i++) {
         imgArray.push(req.files[i].publicUrl);
     }
-    const {name,capacity,cost,location,sport} = req.body
+    const { name, capacity, cost, location, sport } = req.body
     try {
         const docRef = await addDoc(collection(db, "grounds"), {
-            name : name,
-            capacity : capacity,
-            cost : cost,
-            location : location,
+            name: name,
+            capacity: capacity,
+            cost: cost,
+            location: location,
             sport: sport,
-            photos : imgArray
+            photos: imgArray
         });
         res.sendStatus(200)
-    } 
+    }
     catch (e) {
         console.error("Error adding document: ", e);
     }
-    
+
 })
 
-app.delete('/:id',async(req,res) => {
+app.delete('/:id', async (req, res) => {
     await deleteDoc(doc(db, "grounds", req.params.id));
     res.sendStatus(200);
 })
 
-app.get('/update/:id', async(req, res) => {
+app.get('/update/:id', async (req, res) => {
     const docRef = doc(db, "grounds", req.params.id);
     const docSnap = await getDoc(docRef);
 
@@ -117,18 +116,36 @@ app.get('/update/:id', async(req, res) => {
 
 
 app.post('/update/:id', multerUpload.array('images'), async (req, res) => {
+    const imgArray = [];
+    for (let i = 0; i < req.files.length; i++) {
+        imgArray.push(req.files[i].publicUrl);
+    }
     const { name, capacity, cost, location, sport } = req.body
     try {
-        const docRef =  doc(db,"grounds",req.params.id)
-        await updateDoc(docRef, {
-            name: name,
-            capacity: capacity,
-            cost: cost,
-            location: location,
-            sport: sport,
-        })
-    }
-    catch (e) {
+        const docRef = doc(db, "grounds", req.params.id)
+        if(imgArray.length>0){
+            await updateDoc(docRef, {
+                name: name,
+                capacity: capacity,
+                cost: cost,
+                location: location,
+                sport: sport,
+                photos:imgArray
+            })
+        }else{
+            if (imgArray.length == 0) {
+                await updateDoc(docRef, {
+                    name: name,
+                    capacity: capacity,
+                    cost: cost,
+                    location: location,
+                    sport: sport,
+                })
+        }
+        
+    }   
+  
+    } catch (e) {
         console.error("Error adding document: ", e);
     }
 
@@ -150,19 +167,58 @@ app.get('/updateBooking/:id', async (req, res) => {
 
 
 app.post('/updateBooking/:id/:email', async (req, res) => {
+    let groundData;
     try {
         const docRef = doc(db, "grounds", req.params.id)
         const timestamp = parseInt(Object.keys(req.body)[0]);
         const date = new Date(timestamp);
-        console.log(timestamp,date);
         await updateDoc(docRef, {
-                bookingHistory : arrayUnion({
-                    cancelled : false,
-                    date: date,
-                    by: req.params.email
-                })
-            
+            bookingHistory: arrayUnion({
+                cancelled: false,
+                date: date,
+                by: req.params.email
+            })
+
         })
+    }
+    catch (e) {
+        console.error("Error adding document: ", e);
+    }
+    try {
+        const docRef = doc(db, "grounds", req.params.id)
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            groundData = docSnap.data();
+        } else {
+            res.sendStatus(404)
+        }
+
+    }
+    catch (e) {
+        console.error("Error adding document: ", e);
+    }
+
+    try {
+        const docRef = doc(db, "usersBookings", req.params.email)
+        const timestamp = parseInt(Object.keys(req.body)[0]);
+        const date = new Date(timestamp);
+        await updateDoc(docRef, {
+            grounds: arrayUnion({
+                cancelled: false,
+                ground: {
+                    name: groundData.name,
+                    image: groundData.photos[0],
+                    sport: groundData.sport,
+                    capacity: groundData.capacity,
+                    location: groundData.location,
+                    cost: groundData.cost
+                },
+                date: date
+            })
+
+        })
+        res.sendStatus(200)
     }
     catch (e) {
         console.error("Error adding document: ", e);
@@ -170,10 +226,11 @@ app.post('/updateBooking/:id/:email', async (req, res) => {
 
 })
 
-app.get('/getBookings/:email',async(req, res)=>{
+
+
+app.get('/getBookings/:email', async (req, res) => {
     const docRef = doc(db, "usersBookings", req.params.email);
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data())
 
     if (docSnap.exists()) {
         res.send(docSnap.data());
@@ -183,7 +240,67 @@ app.get('/getBookings/:email',async(req, res)=>{
     }
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.post('/cancelbooking/:email/:date',multerUpload.array('images'), async (req, res) => {
+    console.log(req.body)
+    const docRef = doc(db, "usersBookings", req.params.email);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data().grounds;
+    // console.log((req.params.date))
+    for (let i = 0; i < data.length; i++) {
+        const groundDate = new Date(data[i].date.seconds * 1000)
+        if (groundDate == req.params.date) {
+            if (data[i].ground.name == req.body.name) {
+                console.log("found")
+                try{
+                    await updateDoc(docRef, {
+                        grounds: arrayRemove({
+                            cancelled: false,
+                            date: groundDate,
+                            ground: {
+                                capacity: req.body.capacity,
+                                name: req.body.name,
+                                sport: req.body.sport,
+                                location: req.body.location,
+                                cost: req.body.cost,
+                                image: req.body.image
+                            }
+                        })
+                    })
+                    res.sendStatus(200)
+                }
+                catch (e) {
+                    res.sendStatus(404)
+                }
+            }
+        }
+    }
+})
+
+
+app.post('/adminLogin/:key', async (req, res) => {
+    const docRef = doc(db, "admin", "passkey");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        if (docSnap.data().key == req.params.key) {
+            res.sendStatus(200)
+        }
+        else {
+            res.sendStatus(401)
+        }
+    } else {
+        // doc.data() will be undefined in this case
+        // res.sendStatus(404)
+    }
+})
+
+
+
+
+
+
+
+app.listen(process.env.PORT || 8080, () => {
+    console.log("Running")
 })
 

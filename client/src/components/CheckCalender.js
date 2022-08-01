@@ -15,16 +15,17 @@ function CheckCalender(props) {
     async function booking(){
       const timeValue = value.getTime();
       console.log(timeValue.toString())
-      const resposne = await axios
-        .post(`http://localhost:8080/updateBooking/${id}/${sessionStorage.getItem("email") }`,timeValue.toString())
-       console.log(resposne)
+     axios
+        .post(`https://book-your-ground.herokuapp.com/updateBooking/${id}/${localStorage.getItem("email") }`,timeValue.toString())
+        .then((response) => window.alert(`booking successful for date ${value}`))
+        .catch((err) => console.log(err))
     }
   
   return (
     <div className="text-center">
       <div>  <Calendar onChange={onChange} value={value} />
       </div>
-      <Button onClick={booking} className="text-center mx-auto" variant="primary">Book this Ground</Button>
+      <Button onClick={booking} className=" mt-3 text-center mx-auto" variant="primary">Book this Ground</Button>
 
     </div>
      

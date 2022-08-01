@@ -20,8 +20,9 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
   const [groundData,setGroundData] = useState({});
 
     async function getData() {
-      const response = await axios.get(`http://localhost:8080/update/${prop.data}`)
+      const response = await axios.get(`https://book-your-ground.herokuapp.com/update/${prop.data}`)
       await setGroundData((prevData)=>response.data);
+      console.log(groundData);
     }
 
   useEffect(() => {
@@ -31,7 +32,9 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
  
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
+
+  
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -45,12 +48,15 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append('images', file[i]);
+    }
     for (var info in groundData) {
       formData.append(info, groundData[info]);
     }
     axios
-      .post(`http://localhost:8080/update/${prop.data}`, formData)
-      .then((data) =>{})
+      .post(`https://book-your-ground.herokuapp.com/update/${prop.data}`, formData)
+      .then((data) =>window.alert("Ground data updated successfully"))
       .catch(err => {
         console.error(err);
       });
@@ -60,7 +66,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
 
       <h1>Update Ground Info</h1>
-      {groundData.length ?<p>loading</p>: <form onSubmit={handleSubmit} enctype="multipart/form-data" >
+      {groundData.length ?<p>loading</p>: <form className="text-center mx-auto" style={{width:"60%"}} onSubmit={handleSubmit} enctype="multipart/form-data" >
         <Form.Group onChange={handleChange} className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control value={groundData['name']} type="text" placeholder={groundData['name']} />
@@ -74,6 +80,11 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
         <Form.Group onChange={handleChange} className="mb-3" controlId="cost">
           <Form.Label>Cost</Form.Label>
           <Form.Control value={groundData['cost']} type="number" placeholder={groundData['cost']}min="0" step="1" />
+        </Form.Group>
+
+        <Form.Group onChange={(e) => setFile(e.target.files)} controlId="images" className="mb-3">
+          <Form.Label>Upload Image</Form.Label>
+          <Form.Control  type="file"  />
         </Form.Group>
 
         <Form.Group onChange={handleChange} controlId="location" className="mb-3">

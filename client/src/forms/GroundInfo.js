@@ -17,7 +17,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 function GroundInfo() {
       
     const [groundInfo, setGroundInfo] = useState({
-        name:"",
+        name: " ",
         capacity : " ",
         cost : " ",
         location : " ",
@@ -45,56 +45,61 @@ function GroundInfo() {
             formData.append(info, groundInfo[info]);
         }
         axios
-            .post('http://localhost:8080/',formData)
-            .then((data) => { })
+            .post('https://book-your-ground.herokuapp.com/',formData)
+            .then((data) => window.alert("New ground created"))
+            .then(()=>window.location.reload())
             .catch(err => {
                 console.error(err);
             });
     }
 
     return (
-        <form onSubmit={handleSubmit} enctype="multipart/form-data" >
-            <Form.Group onChange={handleChange} className="mb-3" controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control value={groundInfo.name} required type="text" placeholder="Enter Name" />
-            </Form.Group>
+        <div className="text-center" >
+        <h2>List a ground</h2>
+            <form onSubmit={handleSubmit} enctype="multipart/form-data" >
+                <Form.Group onChange={handleChange} className="mb-3" controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control value={groundInfo.name} required type="text" placeholder="Enter Name" />
+                </Form.Group>
 
-            <Form.Group onChange={handleChange} className="mb-3" controlId="capacity">
-                <Form.Label>Capacity</Form.Label>
-                <Form.Control value={groundInfo.capacity} required type="number" placeholder="Capacity" min="0" step="1" />
-            </Form.Group>
+                <Form.Group onChange={handleChange} className="mb-3" controlId="capacity">
+                    <Form.Label>Capacity</Form.Label>
+                    <Form.Control value={groundInfo.capacity} required type="number" placeholder="Capacity" min="0" step="1" />
+                </Form.Group>
 
-            <Form.Group onChange={handleChange} className="mb-3" controlId="cost">
-                <Form.Label>Cost</Form.Label>
-                <Form.Control value={groundInfo.cost} required type="number" placeholder="$" min="0" step="1" />
-            </Form.Group>
+                <Form.Group onChange={handleChange} className="mb-3" controlId="cost">
+                    <Form.Label>Cost</Form.Label>
+                    <Form.Control value={groundInfo.cost} required type="number" placeholder="$" min="0" step="1" />
+                </Form.Group>
 
-            <Form.Group onChange = {(e) => setFile(e.target.files)}  controlId="images" className="mb-3">
-                <Form.Label>Upload Images</Form.Label>
-                <Form.Control  type="file" multiple />
-            </Form.Group>
+                <Form.Group onChange={(e) => setFile(e.target.files)} controlId="images" className="mb-3">
+                    <Form.Label>Upload Image</Form.Label>
+                    <Form.Control type="file"  />
+                </Form.Group>
 
-            <Form.Group onChange={handleChange} controlId="location" className="mb-3">
-                <Form.Label>Location</Form.Label>
-                <Form.Select >
-                    <option>City</option>
-                    {cityOptions.map((option) => <option value={option.name}>{option.name}</option>)}
-                </Form.Select>
-            </Form.Group>
+                <Form.Group onChange={handleChange} controlId="location" className="mb-3">
+                    <Form.Label>Location</Form.Label>
+                    <Form.Select >
+                        <option>City</option>
+                        {cityOptions.map((option) => <option value={option.name}>{option.name}</option>)}
+                    </Form.Select>
+                </Form.Group>
 
-            <Form.Group onChange={handleChange} controlId="sport" className="mb-3">
-                <Form.Label>Sport</Form.Label>
-                <Form.Select >
-                    <option>Sport</option>
-                    {sportOptions.map((option) => <option value={option}>{option}</option>)}
-                </Form.Select>
-            </Form.Group>
+                <Form.Group onChange={handleChange} controlId="sport" className="mb-3">
+                    <Form.Label>Sport</Form.Label>
+                    <Form.Select >
+                        <option>Sport</option>
+                        {sportOptions.map((option) => <option value={option}>{option}</option>)}
+                    </Form.Select>
+                </Form.Group>
 
-            <Button type="submit" className="mb-3"  >
-                Submit
-            </Button>
+                <Button type="submit" className="mb-3"  >
+                    Submit
+                </Button>
 
-        </form>
+            </form>
+        </div>
+       
     );
 }
 
