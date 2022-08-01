@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 
 function ImageCarousel() {
     return (
-        <Carousel className="mx-auto" fade style={{width:"40%", height: "30%"}}>
+        <Carousel className="mx-auto" fade style={{width:"60%", height: "50%"}}>
             <Carousel.Item>
                 <img
                     className="d-block w-100"

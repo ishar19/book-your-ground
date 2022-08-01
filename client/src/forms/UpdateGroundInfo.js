@@ -22,6 +22,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
     async function getData() {
       const response = await axios.get(`http://localhost:8080/update/${prop.data}`)
       await setGroundData((prevData)=>response.data);
+      console.log(groundData);
     }
 
   useEffect(() => {
@@ -31,7 +32,9 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
  
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
+
+  
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -53,7 +56,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
     }
     axios
       .post(`http://localhost:8080/update/${prop.data}`, formData)
-      .then((data) =>{})
+      .then((data) =>window.alert("Ground data updated successfully"))
       .catch(err => {
         console.error(err);
       });
@@ -63,7 +66,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
 
       <h1>Update Ground Info</h1>
-      {groundData.length ?<p>loading</p>: <form onSubmit={handleSubmit} enctype="multipart/form-data" >
+      {groundData.length ?<p>loading</p>: <form className="text-center mx-auto" style={{width:"60%"}} onSubmit={handleSubmit} enctype="multipart/form-data" >
         <Form.Group onChange={handleChange} className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control value={groundData['name']} type="text" placeholder={groundData['name']} />
@@ -81,7 +84,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
         <Form.Group onChange={(e) => setFile(e.target.files)} controlId="images" className="mb-3">
           <Form.Label>Upload Image</Form.Label>
-          <Form.Control type="file" multiple />
+          <Form.Control  type="file"  />
         </Form.Group>
 
         <Form.Group onChange={handleChange} controlId="location" className="mb-3">

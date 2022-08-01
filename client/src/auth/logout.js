@@ -1,4 +1,6 @@
+import fire from '../fire';
 import React from 'react'
+import Nav from 'react-bootstrap/Nav';
 import { getAuth, signOut } from "firebase/auth";
 import Button from 'react-bootstrap/Button';
 
@@ -15,8 +17,8 @@ const LogOut = () => {
         });
     }
 
-    return (
-        <Button onClick= {logOut} variant="danger">Logout</Button>
+    return (<Nav>        <Button className='ml-auto mt-2' onClick={logOut} variant="danger">Logout</Button>
+</Nav>
         )
 }
 

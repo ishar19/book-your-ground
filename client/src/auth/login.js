@@ -1,5 +1,6 @@
-import fire from '../fire'
 import React from 'react'
+import fire from '../fire'
+import Nav from 'react-bootstrap/Nav';
 import { getAuth, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
 import Button from 'react-bootstrap/Button';
 const provider = new GoogleAuthProvider();
@@ -30,9 +31,9 @@ const Login = () => {
             });
     }
   return (
-    <>     
-    <Button onClick={logIn} variant="primary">Login With Google</Button>
-    </>
+    <Nav>     
+    <Button className='ml-auto mt-2' onClick={logIn} variant="primary">Login With Google</Button>
+    </Nav>
   )
 }
 
