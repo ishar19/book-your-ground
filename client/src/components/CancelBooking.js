@@ -11,7 +11,7 @@ function CancelBooking(props) {
   const email = localStorage.getItem('email')
 
   async function deleteBooking(e){
-    await axios.post(`http://localhost:8080/cancelbooking/${email}/${date}`,ground)
+    await axios.post(`https://book-your-ground.herokuapp.com/cancelbooking/${email}/${date}`,ground)
     .then(() => window.location.reload())
     .catch(()=>window.alert("Something happened please try again"))
   }

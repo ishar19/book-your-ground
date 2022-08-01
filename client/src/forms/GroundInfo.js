@@ -45,7 +45,7 @@ function GroundInfo() {
             formData.append(info, groundInfo[info]);
         }
         axios
-            .post('http://localhost:8080/',formData)
+            .post('https://book-your-ground.herokuapp.com/',formData)
             .then((data) => window.alert("New ground created"))
             .then(()=>window.location.reload())
             .catch(err => {

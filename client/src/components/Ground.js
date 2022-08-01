@@ -17,7 +17,7 @@ function Ground(props) {
   }
 
   function deleteGround(id) {
-    axios.delete(`http://localhost:8080/${id}`).then((res) => {
+    axios.delete(`https://book-your-ground.herokuapp.com/${id}`).then((res) => {
       if (res.status === 200) {
         window.alert("Ground Deleted")
         window.location.reload();

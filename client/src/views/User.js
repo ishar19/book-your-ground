@@ -9,7 +9,7 @@ function User() {
   const showGrounds = true
   const groundInfo = []
   const getGrounds = async () => {
-    const data = await axios.get('http://localhost:8080/')
+    const data = await axios.get('https://book-your-ground.herokuapp.com/')
      setGrounds(data.data)
   }
   useEffect(() => {
