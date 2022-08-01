@@ -16,7 +16,7 @@ function CheckCalender(props) {
       const timeValue = value.getTime();
       console.log(timeValue.toString())
      axios
-        .post(`http://localhost:8080/updateBooking/${id}/${localStorage.getItem("email") }`,timeValue.toString())
+        .post(`https://book-your-ground.herokuapp.com/updateBooking/${id}/${localStorage.getItem("email") }`,timeValue.toString())
         .then((response) => window.alert(`booking successful for date ${value}`))
         .catch((err) => console.log(err))
     }

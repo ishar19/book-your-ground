@@ -6,7 +6,7 @@ function ShowBooking() {
 
   const [grounds, setGrounds] = useState([])
   async function getData() {
-    axios.get(`http://localhost:8080/getBookings/${email}`)
+    axios.get(`https://book-your-ground.herokuapp.com/getBookings/${email}`)
       .then(response => response.data)
       .then((response) => { setGrounds(response) })
       .catch((err) => { console.log(err) })

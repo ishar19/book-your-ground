@@ -14,7 +14,7 @@ function GroundBook() {
 
     useEffect(() => {
         async function getData() {
-            const response = await axios.get(`http://localhost:8080/updateBooking/${id}`)
+            const response = await axios.get(`https://book-your-ground.herokuapp.com/updateBooking/${id}`)
             await setGroundData((prevData) => response.data);
 
         }

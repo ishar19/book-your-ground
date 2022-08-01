@@ -20,7 +20,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
   const [groundData,setGroundData] = useState({});
 
     async function getData() {
-      const response = await axios.get(`http://localhost:8080/update/${prop.data}`)
+      const response = await axios.get(`https://book-your-ground.herokuapp.com/update/${prop.data}`)
       await setGroundData((prevData)=>response.data);
       console.log(groundData);
     }
@@ -55,7 +55,7 @@ cityOptions.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
       formData.append(info, groundData[info]);
     }
     axios
-      .post(`http://localhost:8080/update/${prop.data}`, formData)
+      .post(`https://book-your-ground.herokuapp.com/update/${prop.data}`, formData)
       .then((data) =>window.alert("Ground data updated successfully"))
       .catch(err => {
         console.error(err);
