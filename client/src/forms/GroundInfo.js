@@ -46,7 +46,8 @@ function GroundInfo() {
         }
         axios
             .post('http://localhost:8080/',formData)
-            .then((data) => { })
+            .then((data) => window.alert("New ground created"))
+            .then(()=>window.location.reload())
             .catch(err => {
                 console.error(err);
             });
@@ -73,7 +74,7 @@ function GroundInfo() {
 
                 <Form.Group onChange={(e) => setFile(e.target.files)} controlId="images" className="mb-3">
                     <Form.Label>Upload Image</Form.Label>
-                    <Form.Control type="file" multiple />
+                    <Form.Control type="file"  />
                 </Form.Group>
 
                 <Form.Group onChange={handleChange} controlId="location" className="mb-3">

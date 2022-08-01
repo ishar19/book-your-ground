@@ -5,6 +5,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavToHome from './NavToHome'
+import AdminLoginButton from './AdminLoginButton'
 const auth = getAuth();
 
 
@@ -29,9 +31,14 @@ function BasicExample() {
         <Navbar bg="light" expand="lg">
             <Container>
                 <Navbar.Brand >Book-Your-Ground</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
                         {loggedIn ? <Logout /> : <Login />}
                     </Nav>
+                    {loggedIn?<NavToHome />:<></>}
+                    <AdminLoginButton />
+                </Navbar.Collapse>
             </Container>
         </Navbar>
     );

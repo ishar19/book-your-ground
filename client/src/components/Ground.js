@@ -6,10 +6,10 @@ import Button from 'react-bootstrap/Button';
 import CheckBooking from '../components/CheckBooking';
 import Form from 'react-bootstrap/Form';
 
+
 function Ground(props) {
   const [search, setSearch] = useState("")
   const data = props.info;
-  var found = true;
   const handleSubmit = (e) => {
     const value = e.target.search.value
     setSearch(() => value.toString().toLowerCase())
@@ -19,16 +19,15 @@ function Ground(props) {
   function deleteGround(id) {
     axios.delete(`http://localhost:8080/${id}`).then((res) => {
       if (res.status === 200) {
+        window.alert("Ground Deleted")
         window.location.reload();
       }
-    })
+    }).catch((err) => {window.alert("Something went wrong, please try again")})
   }
 
   const grounds =
     data.map((info) => 
-    // console.log(info[1].name.toLowerCase().trim()==search.trim())
-      info[1].name.toLowerCase().trim() == search.trim() || info[1].sport.toLowerCase().trim() == search.trim() || info[1].location.toLowerCase().trim() == search.trim() ||search === "" ?<div className="mb-3">
-        {found = true} 
+      info[1].name.toLowerCase().trim() == search.trim() || info[1].sport.toLowerCase().trim() == search.trim() || info[1].location.toLowerCase().trim() == search.trim() ||search == "" ?<div className="mb-3">
         <Figure className="text-center">
           <Figure.Image
             width={180}
@@ -52,10 +51,8 @@ function Ground(props) {
           {props.isAdmin ? <> </> : <CheckBooking data={{ id: info[0] }} />}
         </div>
       </div>
-        : found = false
-
-    )
-
+        : <></> )
+  
   return (
     <div className="text-center">
       <form className="ml-auto mr-auto" style={{ width: "80%" }} onSubmit={handleSubmit} enctype="multipart/form-data" >
@@ -67,8 +64,7 @@ function Ground(props) {
           Search
         </Button>
       </form>
-      {console.log(found)}
-      {found?grounds:<h2>No search results found for {search}</h2>}
+      {grounds}
     </div>
   )
 }

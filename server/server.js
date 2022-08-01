@@ -123,16 +123,29 @@ app.post('/update/:id', multerUpload.array('images'), async (req, res) => {
     const { name, capacity, cost, location, sport } = req.body
     try {
         const docRef = doc(db, "grounds", req.params.id)
-        await updateDoc(docRef, {
-            name: name,
-            capacity: capacity,
-            cost: cost,
-            location: location,
-            sport: sport,
-            photos: imgArray
-        })
+        if(imgArray.length>0){
+            await updateDoc(docRef, {
+                name: name,
+                capacity: capacity,
+                cost: cost,
+                location: location,
+                sport: sport,
+                photos:imgArray
+            })
+        }else{
+            if (imgArray.length == 0) {
+                await updateDoc(docRef, {
+                    name: name,
+                    capacity: capacity,
+                    cost: cost,
+                    location: location,
+                    sport: sport,
+                })
+        }
+        
     }   
-    catch (e) {
+  
+    } catch (e) {
         console.error("Error adding document: ", e);
     }
 

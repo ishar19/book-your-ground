@@ -1,10 +1,10 @@
 import React from 'react'
-import NavToHome from '../components/NavToHome'
+import Navbar from '../components/Navbar'
 import ShowBooking from '../components/ShowBooking'
 function UserProfile() {
   return (
     <div>
-        <NavToHome/>
+        <Navbar/>
         <ShowBooking/>
     </div>
   )

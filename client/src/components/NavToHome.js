@@ -8,9 +8,8 @@ export default function NavToHome() {
   return (
       <Navbar bg="light" expand="lg">
           <Container>
-              <Navbar.Brand >Book-Your-Ground</Navbar.Brand>
               <Nav className="ml-auto">
-                 <Link to="/"><Button variant="primary">Home</Button></Link>
+                 <Link to="/userprofile"><Button className="mt-2" variant="primary">Your Bookings</Button></Link>
               </Nav>
           </Container>
       </Navbar>
